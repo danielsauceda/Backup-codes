@@ -1,1 +1,80 @@
 * Backup-codes
+Collection of Bash codes that automate the backup of data
+
+
++ For this collection of codes to work the following must be completed:
++ Installation of rclone https://rclone.org/install/
++ Configuration of rclone with Team Drive https://rclone.org/drive/
+
+
+** Linux usage
+
+*** Installation/Configuration
++ The backup codes are contained within src/backup.sh simply move this file to a desired location.
++ Edit the following variables in src/backup.sh
+#+begin_src bash :eval no
+# your directory in the google drive
+GOOGLE_DIRNAME="Daniel Sauceda"
+
+# Name of the team drive done when configuring rclone team drive
+RCLONE_REMOTE_NAME="Arroyave_team_drive"
+#+end_src
+
+*** Functions
+There are three functions that should be adequate to backup your files
+#+begin_src bash :eval no
+# sync a directory to the Team google Drive
+rclone_sync_backup
+# Tar a directory and upload to dated backup directory in the Team Google Drive
+tar_directory_backup
+
+# Tar subdirectories within a root directory and upload the root directory to a dated backup directory in the Team Google Drive
+tar_subdirectories_backup
+#+end_src
+
+*** intended Usage
+The idea is you can copy paste the different function names at the bottom of the script like so:
+#+begin_src bash :eval no
+### YOUR CODE HERE
+rclone_sync_backup -d ~/AA_BB --exclude '*analysis_AA_BB/**'
+tar_directory_backup -d ~/new_elastic_structures --exclude 'AA_BB_CC_DD
+#+end_src
+However in the case of different directories you may wish to backup different directories at differnt time intervals.
+Therefore, simply copy backup.sh to backup1.sh, backup1.sh etc such that:
+
+backup1.sh
+#+begin_src bash :eval no
+### YOUR CODE HERE
+rclone_sync_backup -d ~/AA_BB --exclude '*analysis_AA_BB/**'
+#+end_src
+
+backup2.sh
+#+begin_src bash :eval no
+### YOUR CODE HERE
+tar_directory_backup -d ~/new_elastic_structures --exclude 'AA_BB_CC_DD
+#+end_src
+
+*** Crontab integration
+using ~contab -e~ we can specify the intervals at which each backup will execute http://crontab.org/
+
+Example:
+#+begin_src bash :eval no
+# run at 2:15pm on the first of every month
+15 14 1 * *     cd /path/to/src/directory/ && sh backup1.sh
+
+# run at 5 after 4 every sunday"
+5 4 * * sun cd /path/to/src/directory/ && sh backup2.sh
+#+end_src
+
+
+
+
+
+
+
+
+
+
+
+
+
